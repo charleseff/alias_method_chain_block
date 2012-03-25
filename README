@@ -1,7 +1,3 @@
-the functionality I'm looking for is something like this:
-
-
-
 class SomeObject
   def do_stuff
     puts "doing stuff"
@@ -9,22 +5,38 @@ class SomeObject
 end
 
 extra_stuff = -> do
-  do_stuff_without_extra_stuff
   puts "doing extra stuff"
+  do_stuff_without_extra_stuff
 end
 
 
 some_object = SomeObject.new
 
-alias_method_chain_block(SomeObject, :do_stuff, :extra_stuff) do
+puts "Outside the block:"
+some_object.do_stuff
+puts
+
+puts "Inside the block:"
+alias_method_chain(SomeObject, :do_stuff, :extra_stuff, extra_stuff) do
   some_object.do_stuff
 end
+puts
 
+puts "Outside the block again:"
 some_object.do_stuff
 
 
-Output:
 
+
+
+OUTPUT:
+
+Outside the block:
+doing stuff
+
+Inside the block:
 doing stuff
 doing extra stuff
+
+Outside the block again:
 doing stuff
